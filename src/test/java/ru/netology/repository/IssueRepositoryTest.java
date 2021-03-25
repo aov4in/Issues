@@ -1,20 +1,25 @@
 package ru.netology.repository;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import ru.netology.comparator.CreationDate;
 import ru.netology.comparator.IssueComparator;
+import ru.netology.comparator.ReverseCreationDate;
 import ru.netology.domain.Author;
-import ru.netology.domain.Issues;
+import ru.netology.domain.Issue;
 import ru.netology.domain.Label;
+import ru.netology.exeption.NotFoundException;
+import ru.netology.manager.IssuesManager;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IssuesRepositoryTest {
+class IssueRepositoryTest {
     private IssuesRepository repository = new IssuesRepository();
-    private IssueComparator comparator = new IssueComparator();
+    private IssueComparator issueComparator = new IssueComparator();
+    private CreationDate comparator = new CreationDate();
+    private ReverseCreationDate reverseCreationDate = new ReverseCreationDate();
     private Author author = new Author(1, "Ivan Petrov");
     private Author author1 = new Author(2, "Petr Ivanov");
     private Author author2 = new Author(3, "Ivan Susanin");
@@ -23,9 +28,9 @@ class IssuesRepositoryTest {
     private Label label2 = new Label(2,"documentation","Blue");
     private Label label3 = new Label(3,"invalid","");
     private Set<Label> labels = new HashSet<>();
-    private Issues issue = new Issues(1, "Ivan Petrov", labels, "java", "Open", assignees, "01.03.2019", true, false, true);
-    private Issues issue2 = new Issues(2, "Petr Ivanov", labels, "java", "Close", assignees, "02.04.2020", true, false, false);
-    private Issues issue3 = new Issues(3, "Ivan Susanin", labels, "java", "Close", assignees, "03.05.2021", true, false, false);
+    private Issue issue = new Issue(1, "Ivan Petrov", labels, "java", "Open", assignees, Issue.setDate(2019,03,01), true, false, true);
+    private Issue issue2 = new Issue(2, "Petr Ivanov", labels, "java", "Close", assignees, Issue.setDate(2020,04,02), true, false, false);
+    private Issue issue3 = new Issue(3, "Ivan Susanin", labels, "java", "Close", assignees, Issue.setDate(2021,05,03), true, false, false);
 
     @BeforeEach
     public void setUp() {
@@ -39,16 +44,16 @@ class IssuesRepositoryTest {
 
     @Test
     void shouldOutputListAllOpenIssue() {
-        List<Issues> actual = repository.findOpen(repository.getAll());
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.findOpen(repository.getAll());
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue);
         assertEquals(expected, actual);
     }
 
     @Test
     void shouldOutputListAllCloseIssue() {
-        List<Issues> actual = repository.findClose(repository.getAll());
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.findClose(repository.getAll());
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue2);
         expected.add(issue3);
         assertEquals(expected, actual);
@@ -57,8 +62,8 @@ class IssuesRepositoryTest {
     @Test
     void shouldOpenIssue() {
         repository.openById(repository.getAll(), 1);
-        List<Issues> actual = repository.getAll();
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.getAll();
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue);
         expected.add(issue2);
         expected.add(issue3);
@@ -68,8 +73,8 @@ class IssuesRepositoryTest {
     @Test
     void shouldCloseIssue() {
         repository.closeById(repository.getAll(), 2);
-        List<Issues> actual = repository.getAll();
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.getAll();
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue);
         expected.add(issue2);
         expected.add(issue3);
@@ -79,8 +84,8 @@ class IssuesRepositoryTest {
     @Test
     void shouldSortDateCreationNew() {
         Collections.sort(repository.getAll(), comparator);
-        List<Issues> actual = repository.getAll();
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.getAll();
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue);
         expected.add(issue2);
         expected.add(issue3);
@@ -90,11 +95,12 @@ class IssuesRepositoryTest {
     @Test
     void shouldSortDateUpdateNew() {
         Collections.sort(repository.getAll(), comparator);
-        List<Issues> actual = repository.getAll();
-        List<Issues> expected = new ArrayList<>();
+        List<Issue> actual = repository.getAll();
+        List<Issue> expected = new ArrayList<>();
         expected.add(issue);
         expected.add(issue2);
         expected.add(issue3);
         assertEquals(expected, actual);
     }
+
 }

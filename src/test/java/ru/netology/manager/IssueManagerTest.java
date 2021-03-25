@@ -4,9 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Author;
-import ru.netology.domain.Issues;
+import ru.netology.domain.Issue;
 import ru.netology.domain.Label;
-import ru.netology.manager.IssuesManager;
 import ru.netology.repository.IssuesRepository;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IssuesManagerTest {
+class IssueManagerTest {
 
     IssuesRepository repository = new IssuesRepository();
     IssuesManager manager = new IssuesManager(repository);
@@ -28,9 +27,9 @@ class IssuesManagerTest {
     private Label label2 = new Label(2,"documentation","Blue");
     private Label label3 = new Label(3,"invalid","");
     private Set<Label> labels = new HashSet<>();
-    private Issues issue = new Issues(1, "Ivan Petrov", labels, "java", "Open", assignees, "03.03.2021", true, true, false);
-    private Issues issue2 = new Issues(2, "Petr Ivanov", labels, "java", "Close", assignees, "03.03.2021", true, true, false);
-    private Issues issue3 = new Issues(3, "Ivan Susanin", labels, "java", "Open", assignees, "03.03.2021", true, true, false);
+    private Issue issue = new Issue(1, "Ivan Petrov", labels, "java", "Open", assignees, Issue.setDate(2019,03,01), true, true, false);
+    private Issue issue2 = new Issue(2, "Petr Ivanov", labels, "java", "Close", assignees, Issue.setDate(2019,03,01), true, true, false);
+    private Issue issue3 = new Issue(3, "Ivan Susanin", labels, "java", "Open", assignees, Issue.setDate(2019,03,01), true, true, false);
 
     @Nested
     class MultipleIssue {
@@ -47,15 +46,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterAuthorNo() {
-            List<Issues> actual = manager.filterAuthor(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAuthor(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterAuthorYes() {
-            List<Issues> actual = manager.filterAuthor(author2);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAuthor(author2);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
@@ -64,15 +63,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterLabelNo() {
-            List<Issues> actual = manager.filterLabel(label3);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterLabel(label3);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterLabelYes() {
-            List<Issues> actual = manager.filterLabel(label2);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterLabel(label2);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
@@ -81,15 +80,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterAssigneeNo() {
-            List<Issues> actual = manager.filterAssignee(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAssignee(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterAssigneeYes() {
-            List<Issues> actual = manager.filterAssignee(author2);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAssignee(author2);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
@@ -102,22 +101,22 @@ class IssuesManagerTest {
     class Empty {
         @Test
         void shouldFilterAuthorNo() {
-            List<Issues> actual = manager.filterAuthor(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAuthor(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterLabelNo() {
-            List<Issues> actual = manager.filterLabel(label3);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterLabel(label3);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterAssigneeNo() {
-            List<Issues> actual = manager.filterAssignee(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAssignee(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
@@ -139,15 +138,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterAuthorNo() {
-            List<Issues> actual = manager.filterAuthor(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAuthor(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterAuthorYes() {
-            List<Issues> actual = manager.filterAuthor(author2);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAuthor(author2);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
@@ -156,15 +155,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterLabelNo() {
-            List<Issues> actual = manager.filterLabel(label3);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterLabel(label3);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterLabelYes() {
-            List<Issues> actual = manager.filterLabel(label);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterLabel(label);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
@@ -173,15 +172,15 @@ class IssuesManagerTest {
 
         @Test
         void shouldFilterAssigneeNo() {
-            List<Issues> actual = manager.filterAssignee(author1);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAssignee(author1);
+            List<Issue> expected = new ArrayList<>();
             assertEquals(expected, actual);
         }
 
         @Test
         void shouldFilterAssigneeYes() {
-            List<Issues> actual = manager.filterAssignee(author);
-            List<Issues> expected = new ArrayList<>();
+            List<Issue> actual = manager.filterAssignee(author);
+            List<Issue> expected = new ArrayList<>();
             expected.add(issue);
             expected.add(issue2);
             expected.add(issue3);
